@@ -18,6 +18,10 @@ import java.io.IOException;
  */
 public class EsborrarClients {
 
+    /**
+     * Crida a les funcions necessaries per esborrar un client segons la linea del fitxer
+     * @throws IOException 
+     */
     static void Esborrar_Client() throws IOException {
         int esborrar = utils.LlegirInt("Quina linea vols borrar: ");
         final String ADRECA_AUX = "./aux.txt";
@@ -25,16 +29,27 @@ public class EsborrarClients {
         f.createNewFile();
         FileReader reader = new FileReader(Practica2.ADRECA);
         BufferedReader buffer = new BufferedReader(reader);
+        CopiantIEsborrant(buffer, esborrar, ADRECA_AUX);
+        Practica2.Copiar_texto(buffer, ADRECA_AUX);
+        Practica2.Renombrar(Practica2.ADRECA, f);
+    }
+
+    /**
+     * Copia totes les lineas a un fitxer aux.txt menys la que volem borrar
+     * @param buffer
+     * @param esborrar
+     * @param ADRECA_AUX
+     * @throws IOException 
+     */
+    private static void CopiantIEsborrant(BufferedReader buffer, int esborrar, final String ADRECA_AUX) throws IOException {
         int currentLine = 1;
-        String line;
+        String line = null;
         do {
-            if (esborrar != currentLine) {
-                line = buffer.readLine();
+            line = buffer.readLine();
+            if (esborrar != currentLine && line != null) {
                 files.FileWriter(ADRECA_AUX, line, true);
             }
             currentLine++;
-        } while (buffer.readLine() != null);
-        Practica2.Copiar_texto(buffer, ADRECA_AUX);
-        Practica2.Renombrar(Practica2.ADRECA, f);
+        } while (line != null);
     }
 }

@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Llibreria d'utilitats
@@ -202,11 +204,19 @@ public class utils {
         return result;
     }
 
-    public static String LlegirDataString(String missatge) throws ParseException {
-
+    public static String LlegirDataString(String missatge) {
+        boolean correcte = false;
         SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyy");
-        String DateString = utils.LlegirString(missatge);
-        Date date = formatter.parse(DateString);
+        String DateString = null;
+        while(!correcte){
+            DateString = utils.LlegirString(missatge);
+            try {
+                Date date = formatter.parse(DateString);
+                correcte = true;
+            } catch (ParseException ex) {
+                correcte = false;
+            }
+        }
         return DateString;
     }
 }
